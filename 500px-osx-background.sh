@@ -5,7 +5,7 @@
 # Author: Enrico Cambiaso
 # Email: enrico.cambiaso[at]gmail.com
 # GitHub project URL: https://github.com/auino/500px-osx-background
-# 
+#
 
 # --- --- --- --- ---
 # CONFIGURATION BEGIN
@@ -86,12 +86,14 @@ for i in $(seq 1 $COUNT); do
 	RND=`expr $RANDOM % $COUNT`
 
 	# getting the image url from index
-	IMG=`cat $DIR/500px_list.txt|tail -n +$RND|head -n 1`
-	
+	IMG_LOW=`cat $DIR/500px_list.txt|tail -n +$RND|head -n 1`
+	IMG=$(echo $IMG_LOW|awk -F'/' '{ print "https://drscdn.500px.org/photo/" $5 "/q%3D80_m%3D2000/v2"}')
+
 	# deleting previous imgs
 	rm $DIR/500px_img*
 
 	# getting image data from url
+	curl -s "$IMG_LOW" -o $DIR/500px_img_$RANDOMIZER.png
 	curl -s "$IMG" -o $DIR/500px_img_$RANDOMIZER.png
 
 	# getting image dimensions
